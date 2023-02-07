@@ -4,11 +4,11 @@ namespace MineHub\Prerequisities\AST;
 
 use MineHub\Prerequisities\Variables;
 
-class Or implements Node
+class OrNode implements Node
 {
     public function __construct(
-        public readonly Node $left,
         public readonly Node $right,
+        public readonly Node $left,
     ) {
 
     }

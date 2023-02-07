@@ -5,7 +5,7 @@ namespace MineHub\Prerequisities\AST;
 use MineHub\Prerequisities\Variables;
 use ParseError;
 
-class Variable
+class Variable implements Node
 {
     public function __construct(
         public readonly string $name,

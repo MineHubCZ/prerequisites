@@ -7,22 +7,22 @@ use ParseError;
 class Lexer
 {
     public const Tokens = [
-        ['||', 'Or'],
+        ['\|\|', 'Or'],
         ['&&', 'And'],
         ['!', 'Not'],
-        ['(', 'Open'],
-        [')', 'Close'],
-        ['\S+', 'Variable'],
+        ['\(', 'Open'],
+        ['\)', 'Close'],
+        ['([^\s\(\)\|&!]+)', 'Variable'],
         ['\s+', 'Space'],
         ['.+', 'Error'],
     ];
 
     public function lex(string $code): Stream
     {
-        $re = '~'.implode('|', array_map(fn($item) => '(<'.$item[1].'>'.$item[0].')', self::Tokens)).'~';
+        $re = '~'.implode('|', array_map(fn($item) => '(?<'.$item[1].'>'.$item[0].')', self::Tokens)).'~';
         preg_match_all($re, $code, $matches, PREG_UNMATCHED_AS_NULL | PREG_SET_ORDER);
 
-        return new Stream(array_filter(array_map(function($token) {
+        return new Stream(array_values(array_filter(array_map(function($token) {
             $token = array_filter($token, fn ($item) => null !== $item);
             $keys = array_keys($token);
 
@@ -36,9 +36,9 @@ class Lexer
                 throw new ParseError('Bad input');
             }
 
-            $result = new Token(TokenKind::$kind, $token[0]); 
+            $result = new Token(TokenKind::tryFrom($kind), $token[0]); 
 
             return $result;
-        }, $matches)));
+        }, $matches))));
     }
 }

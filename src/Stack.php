@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MineHub\Prerequisities;
 
+use Throwable;
+
 class Stack
 {
     private array $data = [];
@@ -15,9 +17,9 @@ class Stack
         return $this;
     }
 
-    public function pop(): mixed
+    public function pop(?Throwable $error = null): mixed
     {
-        return array_pop($this->data) ?? null;
+        return array_pop($this->data) ?? ($error ? throw $error : null);
     }
 
     public function top(): mixed
