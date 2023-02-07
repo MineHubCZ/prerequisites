@@ -4,11 +4,11 @@ namespace MineHub\Prerequisities;
 
 class Variables
 {
-    public readonly array $variables;
 
-    public function __construct(bool ...$variables)
-    {
-        $this->variables = $variables;
+    public function __construct(
+        public readonly array $variables,
+    ) {
+    
     }
 
     public function get(string $name): bool
