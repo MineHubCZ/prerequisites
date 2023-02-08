@@ -62,6 +62,19 @@ Everything is expression, so you can do stuff like:
 (true || (false || true)) && (!(true || (false || true)) && false)
 ```
 
+#### Formal definition
+
+TODO maybe its not correct
+
+```
+<variable> ::= [^\s\(\)\|&!]+
+<expression> ::= <variable>
+<expression> ::= <expression>"||"<expression>
+<expression> ::= <expression>"&&"<expression>
+<expression> ::= "("<expression>")"
+<expression> ::= "!"<expression>
+```
+
 ### Evaluation
 
 To evaluate string, simply create instance of `\MineHub\Prerequisities\Evaluator` and use `eval` method. This method takes code and array of variables:
