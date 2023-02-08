@@ -34,12 +34,13 @@ class Parser
                 case TokenKind::Or:
                 case TokenKind::And:
                     if ($operators->top() === TokenKind::And) {
+                        $operators->pop();
                         $result->push(new AndNode($result->pop(new ParseError('Unexpected token')), $result->pop(new ParseError('Unexpected token'))));
                     }
                     $operators->push($token->kind);
                     break;
                 case TokenKind::Open:
-                    $result->push(TokenKind::Open);
+                    $operators->push(TokenKind::Open);
                     break;
                 case TokenKind::Close:
                     while (($op = $operators->pop(new ParseError('Unexpected )'))) !== TokenKind::Open) {
@@ -48,6 +49,7 @@ class Parser
 
                     if ($operators->top() === TokenKind::Not) {
                         $result->push(new Not($result->pop()));
+                        $operators->pop();
                     }
                     break;
                 case TokenKind::Not:

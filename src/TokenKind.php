@@ -3,7 +3,7 @@
 namespace MineHub\Prerequisities;
 
 use MineHub\Prerequisities\AST\AndNode;
-use MineHub\Prerequisities\AST\Node;
+use MineHub\Prerequisities\AST\Not;
 use MineHub\Prerequisities\AST\OrNode;
 use MineHub\Prerequisities\AST\Variable;
 
