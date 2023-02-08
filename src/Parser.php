@@ -11,17 +11,11 @@ use ParseError;
 
 class Parser
 {
-    public function __construct(
-        private Stream $stream
-    ) {
-
-    }
-
-    public function parse(): Node
+    public function parse(Stream $stream): Node
     {
         $operators = new Stack();
         $result = new Stack();
-        while ($token = $this->stream->curent()) {
+        while ($token = $stream->curent()) {
             switch ($token->kind) {
                 case TokenKind::Variable:
                     $node = new Variable($token->content);
@@ -56,7 +50,7 @@ class Parser
                     $operators->push(TokenKind::Not);
                     break;
             }
-            $this->stream->move();
+            $stream->move();
         }   
 
         while (($op = $operators->pop())) {

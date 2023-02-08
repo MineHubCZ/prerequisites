@@ -29,4 +29,3 @@ class Stream
         return $this->tokens[$this->position + $step] ?? null;
     }
 }
-

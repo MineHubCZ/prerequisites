@@ -2,12 +2,29 @@
 
 namespace MineHub\Prerequisities;
 
+use MineHub\Prerequisities\AST\Node;
+
 class Evaluator
 {
-    public static function eval(string $code, array $variables): bool
+    public readonly Lexer $lexer; 
+
+    public readonly Parser $parser; 
+
+    public function __construct()
     {
-        $lexer = new Lexer();
-        $parser = new Parser($lexer->lex($code));
-        return $parser->parse()->eval(new Variables($variables));
+        $this->lexer = new Lexer();
+        $this->parser = new Parser();
+    }
+
+    public function eval(string $code, array $variables): bool
+    {
+        return $this->parse($code)
+                    ->eval(new Variables($variables))
+        ;
+    }
+
+    public function parse(string $code): Node
+    {
+        return $this->parser->parse($this->lexer->lex($code));
     }
 }

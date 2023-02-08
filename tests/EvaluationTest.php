@@ -4,6 +4,7 @@ use MineHub\Prerequisities\AST\AndNode;
 use MineHub\Prerequisities\AST\Not;
 use MineHub\Prerequisities\AST\OrNode;
 use MineHub\Prerequisities\AST\Variable;
+use MineHub\Prerequisities\Evaluator;
 use MineHub\Prerequisities\Variables;
 
 $variables = new Variables(['foo' => true, 'bar' => false]);
@@ -34,4 +35,26 @@ it('evaluates and')
     ->toBeFalse()
 ;
 
+it('evaluates complex group')
+    ->expect((new OrNode(
+        new Variable('bar'),
+        new OrNode(new AndNode(new Variable('bar'), new Variable('foo')), new Variable('foo')),
+    ))->eval($variables))
+    ->toBeTrue()
+;
 
+$evaluator = new Evaluator();
+it('evaluates complex string')
+    ->expect($evaluator->eval('!(!foo || bar) && (foo && !bar)', ['foo' => true, 'bar' => false]))
+    ->toBeTrue()
+;
+
+it('evaluates crazy string')
+    ->expect($evaluator->eval('(true || (false || true)) && (!(true || (false || true)) && false)', ['true' => true, 'false' => false]))
+    ->toBeFalse()
+;
+
+it('evaluates nonsence')
+    ->expect($evaluator->eval('(((((true)))))', ['true' => true]))
+    ->toBeTrue()
+;
